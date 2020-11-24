@@ -1,0 +1,4 @@
+ipythonblocks==1.9.0
+networkx==2.5
+numpy==1.19.4
+sortedcontainers==2.3.0
