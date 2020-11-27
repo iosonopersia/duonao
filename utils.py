@@ -37,22 +37,23 @@ def from_state_to_dict(state):
     return params_dict
 
 
-def beauty_score(coreography, moves):
-    PUNISHMENT = 2
+def beauty_score(choreography, moves):
+    PUNISHMENT = 1
     MAX_RATING = 10
 
     points = 0
-    for index, move in enumerate(coreography):
+    for index, move in enumerate(choreography):
         if move not in moves:
             continue
-        if move in coreography[:index]:
-            points -= PUNISHMENT
+        if move in choreography[:index]:
+            cur_value = - PUNISHMENT * index/len(choreography)
         else:
-            points += moves[move].rating
+            cur_value = moves[move].rating * 5
+        points += cur_value
 
     # Normalize the result inside the [0,1] interval:
-    MAX_POINTS = len(coreography) * MAX_RATING
-    MIN_POINTS = - len(coreography) * PUNISHMENT
+    MAX_POINTS = len(choreography) * MAX_RATING
+    MIN_POINTS = - len(choreography) * PUNISHMENT
     # points is now inside the [MIN_POINTS, MAX_POINTS] interval...
     points += abs(MIN_POINTS)
     # points is now inside the [0, MAX_POINTS + abs(MIN_POINTS)] interval...

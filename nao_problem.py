@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import random
+
 from aima.search import Problem
 from utils import from_state_to_dict, beauty_score
 
@@ -20,8 +22,11 @@ class NaoProblem(Problem):
         if 'standing' in move.preconditions and state_dict['standing'] != move.preconditions['standing']:
             # If a 'standing' precondition is set, ensure that it's satisfied
             return False
-        if move_name == state_dict['position']:
+        if move_name == state_dict['choreography'][-1]:
             # Avoid repeating the same move twice in a row
+            return False
+        full_choreography = [*self.previous_moves_done, *state_dict['choreography'], move_name]
+        if full_choreography.count(move_name) > 4:
             return False
         return True
 
@@ -33,6 +38,7 @@ class NaoProblem(Problem):
         for move_name, move in self.available_moves.items():
             if self.is_move_applicable(state, move_name, move):
                 usable_actions.append(move_name)
+        random.shuffle(usable_actions)
         return usable_actions
 
     def result(self, state, action):
@@ -40,10 +46,13 @@ class NaoProblem(Problem):
         Action is assumed to be a valid action in the state """
         move = self.available_moves[action]
         state_dict = from_state_to_dict(state)
-        return (('position', action),
+        full_choreography = [*self.previous_moves_done, *state_dict['choreography'], action]
+        full_choreography = [*state_dict['choreography'], action]
+        return (('choreography', (*state_dict['choreography'], action)),
                 ('standing', move.postconditions['standing']),
                 ('remaining_time', state_dict['remaining_time'] - move.duration),
-                ('moves_done', state_dict['moves_done'] + 1))
+                ('moves_done', state_dict['moves_done'] + 1),
+                ('beauty_score', beauty_score(full_choreography, self.available_moves)))
 
     def goal_test(self, state):
         """ Given a state, return True if state is a goal state or False, otherwise """
@@ -54,20 +63,5 @@ class NaoProblem(Problem):
         a = goal_remaining_time - self.threshold
         b = goal_remaining_time + self.threshold
 
-        # TODO: valutare anche il beauty_score (deve essere maggiore di una certa soglia minima)
-        # Il beauty_score deve essere valutato su TUTTA la coreografia realizzata fino ad adesso!!!
-        return (a <= state_dict['remaining_time'] <= b) and state_dict['moves_done'] >= goal_dict['moves_done']
-
-    def h(self, node):
-        """ Return the heuristic value for a given state. Default heuristic function used is 
-        h(n) = number of misplaced tiles """
-        every_move_done_until_now = [*self.previous_moves_done]
-        for n in node.path():
-            state_dict = from_state_to_dict(n.state)
-            every_move_done_until_now.append(state_dict['position'])
-
-        # Con questa euristica dobbiamo valutare "l'artisticità" di tutta la coreografia realizzata fino ad adesso,
-        # che è contenuta in every_move_done_until_now. Da penalizzare: ripetitività delle mosse. Da incentivare: punteggio totale raggiunto.
-        heuristic = 1 - beauty_score(every_move_done_until_now, self.available_moves)
-        print(heuristic)
-        return heuristic
+        return (a <= state_dict['remaining_time'] <= b) and state_dict['moves_done'] >= goal_dict['moves_done'] and \
+                state_dict['beauty_score'] >= goal_dict['beauty_score']
