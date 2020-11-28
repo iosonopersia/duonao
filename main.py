@@ -23,7 +23,7 @@ class MoveInfo:
         self.postconditions = postconditions
 
 
-if __name__ == '__main__':
+def main(robot_ip, port):
     # TODO: win the challenge
     moves = {'AirGuitar':    MoveInfo(5.24,  8, {'standing': True}, {'standing': True}),
              'ArmDance':     MoveInfo(11.34, 10, {'standing': True}, {'standing': True}),
@@ -76,6 +76,20 @@ if __name__ == '__main__':
     # print(state_dict['beauty_score']*100)
     # print(solution)
     play_song('RockNRollRobot.mp3')
-    ip = "127.0.0.1"
-    port = 43617
-    do_moves(solution, ip, port)
+
+    do_moves(solution, robot_ip, port)
+
+
+if __name__ == "__main__":
+
+    robot_ip = "127.0.0.1"
+    port = 9559 # Insert NAO port
+    if len(sys.argv) <= 1:
+        print ("robotIP default: 127.0.0.1")
+    elif len(sys.argv) <= 2:
+        robot_ip = sys.argv[1]
+    else:
+        port = int(sys.argv[2])
+        robot_ip = sys.argv[1]
+
+    main(robot_ip, port)
