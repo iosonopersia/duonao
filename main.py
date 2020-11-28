@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from aima.search import *
 from nao_problem import NaoProblem
-from utils import from_state_to_dict
+from utils import *
 
 robotIP = '127.0.0.1'
 robotPort = 9559
@@ -75,5 +75,7 @@ if __name__ == '__main__':
     state_dict = from_state_to_dict(cur_solution.state)
     # print(state_dict['beauty_score']*100)
     # print(solution)
-    # play_song('RockNRollRobot.mp3')
-    # do_moves(solution)
+    play_song('RockNRollRobot.mp3')
+    ip = "127.0.0.1"
+    port = 43617
+    do_moves(solution, ip, port)

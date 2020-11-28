@@ -1,17 +1,22 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import importlib
-from playsound import playsound
+
+import subprocess
+import vlc
 
 
 def play_song(song_name):
-    # block=False => the command is run asynchronously
-    playsound(song_name, block=False)
+
+    p = vlc.MediaPlayer(song_name)
+    p.play()
 
 
-def do_moves(moves):
+def do_moves(moves, robot_ip, robot_port):
     for move in moves:
-        importlib.import_module("." + move, "NaoMoves").main(robotIP, robotPort)
+        python2_command = "python2 ./NaoMoves/"+move+".py " + str(robot_ip)+" " + str(robot_port)
+
+        process = subprocess.run(python2_command.split(), stdout=subprocess.PIPE)
+        print(process.stdout) # receive output from the python2 script
 
 
 def from_state_to_dict(state):
@@ -58,3 +63,6 @@ def beauty_score(choreography, moves):
     points += abs(MIN_POINTS)
     # points is now inside the [0, MAX_POINTS + abs(MIN_POINTS)] interval...
     return points / (abs(MIN_POINTS) + MAX_POINTS)
+
+
+
