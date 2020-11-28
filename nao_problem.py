@@ -60,7 +60,7 @@ class NaoProblem(Problem):
         goal_dict = from_state_to_dict(self.goal)
 
         goal_remaining_time = goal_dict['remaining_time']
-        a = goal_remaining_time - self.threshold
+        a = goal_remaining_time
         b = goal_remaining_time + self.threshold
 
         return (a <= state_dict['remaining_time'] <= b) and state_dict['moves_done'] >= goal_dict['moves_done'] and \

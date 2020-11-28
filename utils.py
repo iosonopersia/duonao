@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import subprocess
+import time
+
 import vlc
 
 
@@ -14,9 +16,11 @@ def play_song(song_name):
 def do_moves(moves, robot_ip, robot_port):
     for move in moves:
         python2_command = "python2 ./NaoMoves/"+move+".py " + str(robot_ip)+" " + str(robot_port)
-
+        start_move=time.time()
         process = subprocess.run(python2_command.split(), stdout=subprocess.PIPE)
-        print(process.stdout) # receive output from the python2 script
+        move_length = time.time()-start_move
+        #print(process.stdout) # receive output from the python2 script
+        print(move +" "+ str(move_length))
 
 
 def from_state_to_dict(state):
@@ -53,7 +57,7 @@ def beauty_score(choreography, moves):
         if move in choreography[:index]:
             cur_value = - PUNISHMENT * index/len(choreography)
         else:
-            cur_value = moves[move].rating * 5
+            cur_value = moves[move].rating * 2
         points += cur_value
 
     # Normalize the result inside the [0,1] interval:
