@@ -15,12 +15,13 @@ def play_song(song_name):
 
 def do_moves(moves, robot_ip, robot_port):
     for move in moves:
+        print(f"Executing: {move}... ", end="")
         python2_command = "python2 ./NaoMoves/"+move+".py " + str(robot_ip)+" " + str(robot_port)
         start_move=time.time()
-        process = subprocess.run(python2_command.split(), stdout=subprocess.PIPE)
+        #process = subprocess.run(python2_command.split(), stdout=subprocess.PIPE)
         move_length = time.time()-start_move
         #print(process.stdout) # receive output from the python2 script
-        print(move +" "+ str(move_length))
+        print(f"done in {move_length} seconds.")
 
 
 def from_state_to_dict(state):

@@ -40,32 +40,35 @@ def main(robot_ip, port):
              'StayingAlive': MoveInfo(5.91,  9, {'standing': True}, {'standing': True}),
              'Rhythm':       MoveInfo(4.02,  2, {'standing': True}, {'standing': True}),
              'PulpFiction':  MoveInfo(5.6,   8, {'standing': True}, {'standing': True})}
-    initial_pos = ('StandInit', MoveInfo(0))
-    final_goal_pos = ('Crouch', MoveInfo(1.05))
-    mandatory_pos = [('Sit', MoveInfo(3.12)),
-                     ('SitRelax', MoveInfo(3.02)),
+    initial_pos = ('StandInit', MoveInfo(0, postconditions={'standing': True}))
+    final_goal_pos = ('Crouch', MoveInfo(1.05, postconditions={'standing': False}))
+    mandatory_pos = [('Sit', MoveInfo(3.12, postconditions={'standing': False})),
+                     ('SitRelax', MoveInfo(3.02, postconditions={'standing': False})),
                      ('WipeForehead', MoveInfo(4.1)),
-                     ('Stand', MoveInfo(2.02)),
+                     ('Stand', MoveInfo(2.02, postconditions={'standing': True})),
                      ('Hello', MoveInfo(4.02)),
-                     ('StandZero', MoveInfo(2.02))]
+                     ('StandZero', MoveInfo(2.02, postconditions={'standing': True}))]
     # Optional step: shuffle mandatory_states
     random.shuffle(mandatory_pos)
 
     pos_list = [initial_pos, *mandatory_pos, final_goal_pos]
-    # print(pos_list)
 
     solution = tuple()
+    print("PLANNED CHOREOGRAPHY:")
     start = time.time()
     for index in range(1, len(pos_list)):
-        cur_state = (('choreography', (pos_list[index-1][0],)),
-                     ('standing', is_standing(pos_list[index-1])),
-                     ('remaining_time', 180/7.0 - pos_list[index][1].duration),
+        choreography = (pos_list[index-1][0],)
+        standing = is_standing(pos_list[index-1])
+        remaining_time = 180.0/7 - pos_list[index][1].duration
+        cur_state = (('choreography', choreography),
+                     ('standing', standing),
+                     ('remaining_time', remaining_time),
                      ('moves_done', 0),
                      ('beauty_score', 0.0))
         cur_goal_state = (('remaining_time', 0),
                           ('moves_done', 5),
-                          ('beauty_score', 0.3))
-        cur_problem = NaoProblem(cur_state, cur_goal_state, moves, 1, solution)
+                          ('beauty_score', 2.5))
+        cur_problem = NaoProblem(cur_state, cur_goal_state, moves, 1, solution, "entropy")
         cur_solution = iterative_deepening_search(cur_problem)
         if cur_solution is None:
             raise RuntimeError(f'Step {index} - no solution was found!')
@@ -75,26 +78,27 @@ def main(robot_ip, port):
         solution += cur_choreography
 
     solution += (final_goal_pos[0],)
-    print("Needed time to plan: " + str(time.time()-start))
+    print(f"Needed time to plan: {time.time()-start} seconds.")
     state_dict = from_state_to_dict(cur_solution.state)
-    # print(state_dict['beauty_score']*100)
-    # print(solution)
+    print(f"Beauty_score: {state_dict['beauty_score']}")
+    print(f"Estimated choreography duration: {180.0 - state_dict['remaining_time']}")
+    print("-------------------------------------------------------")
+    
+    # Dance execution
     play_song('RockNRollRobot.mp3')
     start_moves=time.time()
     do_moves(solution, robot_ip, port)
-    print("Length of the entire choreography: " + str(time.time()-start_moves))
+    print(f"Length of the entire choreography: {time.time()-start_moves} seconds.")
 
 
 if __name__ == "__main__":
 
     robot_ip = "127.0.0.1"
     port = 9559 # Insert NAO port
-    if len(sys.argv) <= 1:
-        print("robotIP default: 127.0.0.1")
-    elif len(sys.argv) <= 2:
-        robot_ip = sys.argv[1]
-    else:
+    if len(sys.argv) > 2:
         port = int(sys.argv[2])
         robot_ip = sys.argv[1]
-
+    elif len(sys.argv) == 2:
+        robot_ip = sys.argv[1]
+    
     main(robot_ip, port)
