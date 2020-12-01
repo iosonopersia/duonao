@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+import math
 import subprocess
 import time
 
@@ -46,7 +46,30 @@ def from_state_to_dict(state):
     return params_dict
 
 
-def beauty_score(choreography, moves):
+def beauty_score(choreography, moves, method="entropy"):
+    if method == "entropy":
+        return calc_entropy(choreography)
+    elif method == "custom":
+        return calc_custom(choreography, moves)
+
+
+def calc_entropy(choreography):
+    frequency_dict = {}
+    for move in choreography:
+        if move not in frequency_dict:
+            frequency_dict[move] = 1
+        else:
+            frequency_dict[move] += 1
+
+    entropy = 0.0
+    for unique_move, frequency in frequency_dict.items():
+        probability = frequency / len(choreography)
+        entropy -= probability * math.log(probability, 2)
+
+    return entropy
+
+
+def calc_custom(choreography, moves):
     PUNISHMENT = 1
     MAX_RATING = 10
 
@@ -67,6 +90,3 @@ def beauty_score(choreography, moves):
     points += abs(MIN_POINTS)
     # points is now inside the [0, MAX_POINTS + abs(MIN_POINTS)] interval...
     return points / (abs(MIN_POINTS) + MAX_POINTS)
-
-
-

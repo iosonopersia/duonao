@@ -52,7 +52,7 @@ class NaoProblem(Problem):
                 ('standing', move.postconditions['standing']),
                 ('remaining_time', state_dict['remaining_time'] - move.duration),
                 ('moves_done', state_dict['moves_done'] + 1),
-                ('beauty_score', beauty_score(full_choreography, self.available_moves)))
+                ('beauty_score', beauty_score(full_choreography, self.available_moves, method="entropy")))
 
     def goal_test(self, state):
         """ Given a state, return True if state is a goal state or False, otherwise """
