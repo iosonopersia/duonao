@@ -6,9 +6,6 @@ from aima.search import *
 from nao_problem import NaoProblem
 from utils import *
 
-robotIP = '127.0.0.1'
-robotPort = 9559
-
 
 def is_standing(position):
     """
@@ -70,6 +67,9 @@ def main(robot_ip, port):
                           ('beauty_score', 2.5))
         cur_problem = NaoProblem(cur_state, cur_goal_state, moves, 1, solution, "entropy")
         cur_solution = iterative_deepening_search(cur_problem)
+        #cur_solution = uniform_cost_search(cur_problem) #it takes too much time
+        #cur_solution = depth_first_graph_search(cur_problem)
+        #print(str(index)+ "solution found")
         if cur_solution is None:
             raise RuntimeError(f'Step {index} - no solution was found!')
 

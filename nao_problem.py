@@ -64,3 +64,26 @@ class NaoProblem(Problem):
 
         return (a <= state_dict['remaining_time'] <= b) and state_dict['moves_done'] >= goal_dict['moves_done'] and \
                 state_dict['beauty_score'] >= goal_dict['beauty_score']
+
+    def path_cost(self, c, state1, action, state2):
+        """Return the cost of a solution path that arrives at state2 from
+           state1 via action, assuming cost c to get up to state1. If the problem
+           is such that the path doesn't matter, this function will only look at
+           state2. If the path does matter, it will consider c and maybe state1
+           and action. The default method costs 1 for every step in the path."""
+        '''
+        #come costo aggiungo anche l'inverso del beauty score
+        a = 1
+        state1_dict = from_state_to_dict(state1)
+        state2_dict = from_state_to_dict(state2)
+        beauty_score_difference = state2_dict['beauty_score']-state1_dict['beauty_score']
+        alfa_beauty_score_difference = a * (-beauty_score_difference)
+        #print (alfa_beauty_score_difference)
+        '''
+        action_duration = 0
+        for move_name, move in self.available_moves.items():
+            if move_name == action:
+                action_duration = move.duration
+        #print(action_duration)
+        #print(str(c))
+        return c + action_duration  # + alfa_beauty_score_difference
