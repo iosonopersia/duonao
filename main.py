@@ -18,8 +18,8 @@ class MoveInfo:
     def __init__(self, duration=None, rating=None, preconditions=None, postconditions=None):
         self.duration = duration
         self.rating = rating
-        self.preconditions = preconditions
-        self.postconditions = postconditions
+        self.preconditions = preconditions if preconditions is not None else {}
+        self.postconditions = postconditions if preconditions is not None else {}
 
 
 def main(robot_ip, port):
