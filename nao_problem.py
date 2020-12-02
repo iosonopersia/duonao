@@ -47,8 +47,12 @@ class NaoProblem(Problem):
         move = self.available_moves[action]
         state_dict = from_state_to_dict(state)
         full_choreography = [*self.previous_moves_done, *state_dict['choreography'], action]
+        if 'standing' in move.postconditions:
+            new_standing = move.postconditions['standing']
+        else:
+            new_standing = state_dict['standing']
         return (('choreography', (*state_dict['choreography'], action)),
-                ('standing', move.postconditions['standing']),
+                ('standing', new_standing),
                 ('remaining_time', state_dict['remaining_time'] - move.duration),
                 ('moves_done', state_dict['moves_done'] + 1),
                 ('beauty_score', beauty_score(full_choreography, self.available_moves, method=self.evaluation_function)))
