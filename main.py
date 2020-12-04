@@ -94,7 +94,7 @@ def main(robot_ip, port):
     print("-------------------------------------------------------")
     
     # Dance execution
-    play_song('RockNRollRobot.mp3')
+    play_song("Don't stop me now - Queen.mp3")
     start_moves=time.time()
     do_moves(solution, robot_ip, port)
     print(f"Length of the entire choreography: {time.time()-start_moves} seconds.")
