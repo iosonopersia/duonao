@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import time
 
 from aima.search import *
 from nao_problem import NaoProblem
@@ -8,11 +7,10 @@ from utils import *
 
 
 def is_standing(position):
-    """
-    if position in ('Crouch', 'Sit', 'SitRelax'):
+    if position in ('M_Crouch', 'M_Sit', 'M_SitRelax'):
         return False
-    """
     return True
+
 
 class MoveInfo:
     def __init__(self, duration=None, rating=None, preconditions=None, postconditions=None):
@@ -24,38 +22,34 @@ class MoveInfo:
 
 def main(robot_ip, port):
     # TODO: win the challenge
-    moves = {'AirGuitar':    MoveInfo(5.24,  8, {'standing': True}, {'standing': True}),
-             'ArmDance':     MoveInfo(11.34, 10, {'standing': True}, {'standing': True}),
-             'ArmsOpening': MoveInfo(4, 10, {'standing': True}, {'standing': True}),
-             'BlowKisses':   MoveInfo(4.9,   6, {'standing': True}, {'standing': True}),
-             'Bow':          MoveInfo(4.6,   2, {'standing': True}, {'standing': True}),
-             'DiagonalLeft': MoveInfo(2, 10, {'standing': True}, {'standing': True}),
-             'DiagonalRight': MoveInfo(2, 10, {'standing': True}, {'standing': True}),
-             'DoubleMovement': MoveInfo(5.34, 10, {'standing': True}, {'standing': True}),
-             'MoveBackward': MoveInfo(2.5, 10, {'standing': True}, {'standing': True}),
-             'MoveForward': MoveInfo(2.5, 10, {'standing': True}, {'standing': True}),
-             'DanceMove':    MoveInfo(6.9,   1, {'standing': True}, {'standing': False}),
-             'SprinklerL':   MoveInfo(4.1,   5, {'standing': True}, {'standing': True}),
-             'SprinklerR':   MoveInfo(4.1,   5, {'standing': True}, {'standing': True}),
-             'Dab':          MoveInfo(3.1,   7, {'standing': True}, {'standing': True}),
-             'RightArm': MoveInfo(9, 10, {'standing': True}, {'standing': True}),
-             'RotationFootLLeg': MoveInfo(3, 10, {'standing': True}, {'standing': True}),
-             'RotationFootRLeg': MoveInfo(3, 10, {'standing': True}, {'standing': True}),
-             'TheRobot':     MoveInfo(6.04,  4, {'standing': True}, {'standing': True}),
-             'ComeOn':       MoveInfo(4.61,  3, {'standing': True}, {'standing': True}),
-             'StayingAlive': MoveInfo(5.91,  9, {'standing': True}, {'standing': True}),
-             'Rhythm':       MoveInfo(4.02,  2, {'standing': True}, {'standing': True}),
-             'PulpFiction':  MoveInfo(5.6,   8, {'standing': True}, {'standing': True})}
-    initial_pos = ('StandInit', MoveInfo(0, postconditions={'standing': True}))
-    final_goal_pos = ('Crouch', MoveInfo(1.05, postconditions={'standing': False}))
-    mandatory_pos = [('Sit', MoveInfo(3.12, postconditions={'standing': False})),
-                     ('SitRelax', MoveInfo(10.96, postconditions={'standing': False})),
-                     ('WipeForehead', MoveInfo(4.1)),
-                     ('Stand', MoveInfo(2.02, postconditions={'standing': True})),
-                     ('Hello', MoveInfo(4.02)),
-                     ('StandZero', MoveInfo(2.02, postconditions={'standing': True}))]
+    moves = {'0_StandUp':       MoveInfo(8.3,  5, {'standing': False}, {'standing': True}),
+             '1_AirGuitar':     MoveInfo(4.7,  8, {'standing': True}, {'standing': True}),
+             '2_ArmDance':      MoveInfo(10.3, 10, {'standing': True}, {'standing': True}),
+             '3_BlowKisses':    MoveInfo(4.5, 6, {'standing': True}, {'standing': True}),
+             '4_ArmsOpening':   MoveInfo(3.8, 10, None, None),
+             '5_Bow':           MoveInfo(4.0,   2, {'standing': True}, {'standing': True}),
+             '6_DiagonalLeft':  MoveInfo(3.2, 10, {'standing': True}, {'standing': True}),
+             '7_DiagonalRight': MoveInfo(2.8, 10, {'standing': True}, {'standing': True}),
+             '8_DanceMove':     MoveInfo(6.3,   1, {'standing': True}, {'standing': True}),
+             '9_SprinklerL':    MoveInfo(4.3,   5, {'standing': True}, {'standing': True}),
+             '10_SprinklerR':   MoveInfo(4.3,   5, {'standing': True}, {'standing': True}),
+             '11_Dab':          MoveInfo(3.3,   7, {'standing': True}, {'standing': True}),
+             '12_RightArm':     MoveInfo(9.1, 10, None, None),
+             '13_TheRobot':     MoveInfo(6.3,  4, {'standing': True}, {'standing': True}),
+             '14_ComeOn':       MoveInfo(3.8,  3, {'standing': True}, {'standing': True}),
+             '15_StayingAlive': MoveInfo(6.1,  9, {'standing': True}, {'standing': True}),
+             '16_Rhythm':       MoveInfo(3.2,  2, {'standing': True}, {'standing': True}),
+             '17_PulpFiction':  MoveInfo(5.8,   8, {'standing': True}, {'standing': True})}
+    initial_pos = ('M_StandInit', MoveInfo(1.4, postconditions={'standing': True}))
+    mandatory_pos = [('M_Sit', MoveInfo(9.3, postconditions={'standing': False})),
+                     ('M_SitRelax', MoveInfo(11.3, postconditions={'standing': False})),
+                     ('M_WipeForehead', MoveInfo(4.5)),
+                     ('M_Stand', MoveInfo(2.3, postconditions={'standing': True})),
+                     ('M_Hello', MoveInfo(4.3)),
+                     ('M_StandZero', MoveInfo(1.4, postconditions={'standing': True}))]
+    final_goal_pos = ('M_Crouch', MoveInfo(1.3, postconditions={'standing': False}))
     # Optional step: shuffle mandatory_states
-    random.shuffle(mandatory_pos)
+    # random.shuffle(mandatory_pos)
 
     pos_list = [initial_pos, *mandatory_pos, final_goal_pos]
 
@@ -63,9 +57,11 @@ def main(robot_ip, port):
     print("PLANNED CHOREOGRAPHY:")
     start = time.time()
     for index in range(1, len(pos_list)):
-        choreography = (pos_list[index-1][0],)
-        standing = is_standing(pos_list[index-1])
-        remaining_time = 180.0/7 - pos_list[index][1].duration
+        starting_pos = pos_list[index-1]
+        ending_pos = pos_list[index]
+        choreography = (starting_pos[0],)
+        standing = is_standing(starting_pos[0])
+        remaining_time = 180.0/7 - ending_pos[1].duration
         cur_state = (('choreography', choreography),
                      ('standing', standing),
                      ('remaining_time', remaining_time),
@@ -73,12 +69,9 @@ def main(robot_ip, port):
                      ('beauty_score', 0.0))
         cur_goal_state = (('remaining_time', 0),
                           ('moves_done', 5),
-                          ('beauty_score', 2.5))
+                          ('beauty_score', 2.5 + 0.2*(index-1)))
         cur_problem = NaoProblem(cur_state, cur_goal_state, moves, 1, solution, "entropy")
         cur_solution = iterative_deepening_search(cur_problem)
-        #cur_solution = uniform_cost_search(cur_problem) #it takes too much time
-        #cur_solution = depth_first_graph_search(cur_problem)
-        #print(str(index)+ "solution found")
         if cur_solution is None:
             raise RuntimeError(f'Step {index} - no solution was found!')
 
@@ -103,7 +96,7 @@ def main(robot_ip, port):
 if __name__ == "__main__":
 
     robot_ip = "127.0.0.1"
-    port = 9559 # Insert NAO port
+    port = 39451  # Insert NAO port
     if len(sys.argv) > 2:
         port = int(sys.argv[2])
         robot_ip = sys.argv[1]
