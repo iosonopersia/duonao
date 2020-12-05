@@ -5,11 +5,9 @@ from naoqi import ALProxy
 
 
 def main(robotIP, port):
-	nTries = 0
+	nTries = 3
 	postureProxy = ALProxy("ALRobotPosture", robotIP, port)
-	if (nTries != 3):
-		nTries = 3
-		postureProxy.setMaxTryNumber(nTries)
+	postureProxy.setMaxTryNumber(nTries)
 
 	postureProxy.goToPosture("Stand", 1.0)
 
