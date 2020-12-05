@@ -52,7 +52,7 @@ def main(robot_ip, port):
              'PulpFiction':   NaoMove(5.8,   {'standing': True},  {'standing': True}),
              'Wave':          NaoMove(3.62,  None, None),  # Prima era 9.45
              'Glory':         NaoMove(3.23,  None, None),  # Prima era 6.3
-             'Clap':          NaoMove(4.04,  None, None),  # Prima era 10.34
+             'Clap':          NaoMove(4.06,  None, None),  # Prima era 10.34
              'Joy':           NaoMove(4.47,  None, None)}  # Prima era 7.39
 
     # The following is the order we chose for the mandatory positions:
