@@ -100,7 +100,7 @@ def main(robot_ip, port):
         cur_goal_state = (('standing', goal_standing),
                           ('remaining_time', 0),  # About this amount of time left
                           ('moves_done', 5),  # At least this number of moves done
-                          ('entropy', 2.5))  # At least this entropy value
+                          ('entropy', 2.5 + 0.2*(index-1)))  # At least this entropy value
 
         # The partial solution is found with an Iterative Deepening Search algorithm.
         # We pass the full choreography built so far ('solution') to the class that
