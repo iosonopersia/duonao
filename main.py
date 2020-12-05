@@ -35,33 +35,33 @@ def main(robot_ip, port):
     # TODO: win the challenge :-)
     # The following ones are the moves made available to the robot:
     moves = {'StandUp':       NaoMove(8.35,  {'standing': False}, {'standing': True}),
-             'AirGuitar':     NaoMove(4.7,   {'standing': True},  {'standing': True}),
+             'AirGuitar':     NaoMove(4.10,   {'standing': True},  {'standing': True}),
              'ArmDance':      NaoMove(10.42, {'standing': True},  {'standing': True}),
              'BlowKisses':    NaoMove(4.58,  {'standing': True},  {'standing': True}),
-             'ArmsOpening':   NaoMove(3.86,  None, None),
-             'Bow':           NaoMove(4.1,   {'standing': True},  {'standing': True}),
-             'DiagonalRight': NaoMove(2.94,  {'standing': True},  {'standing': True}),
-             'DanceMove':     NaoMove(6.36,  {'standing': True},  {'standing': True}),
-             'SprinklerL':    NaoMove(4.3,   {'standing': True},  {'standing': True}),
+             #'ArmsOpening':   NaoMove(3.86,  None, None),
+             'Bow':           NaoMove(3.86,   {'standing': True},  {'standing': True}),
+             'DiagonalRight': NaoMove(2.56,  {'standing': True},  {'standing': True}),
+             'DanceMove':     NaoMove(6.13,  {'standing': True},  {'standing': True}),
+             'SprinklerL':    NaoMove(4.14,   {'standing': True},  {'standing': True}),
              'SprinklerR':    NaoMove(4.36,  {'standing': True},  {'standing': True}),
              'RightArm':      NaoMove(9.19,  None, None),
-             'TheRobot':      NaoMove(6.3,   {'standing': True},  {'standing': True}),
-             'ComeOn':        NaoMove(3.8,   {'standing': True},  {'standing': True}),
-             'StayingAlive':  NaoMove(6.1,   {'standing': True},  {'standing': True}),
-             'Rhythm':        NaoMove(3.22,  {'standing': True},  {'standing': True}),
+             'TheRobot':      NaoMove(6.10,   {'standing': True},  {'standing': True}),
+             'ComeOn':        NaoMove(3.62,   {'standing': True},  {'standing': True}),
+             'StayingAlive':  NaoMove(5.90,   {'standing': True},  {'standing': True}),
+             'Rhythm':        NaoMove(2.95,  {'standing': True},  {'standing': True}),
              'PulpFiction':   NaoMove(5.8,   {'standing': True},  {'standing': True}),
-             'Wave':          NaoMove(3.62,  None, None),
-             'Glory':         NaoMove(3.23,  None, None),
-             'Clap':          NaoMove(4.06,  None, None),
-             'Joy':           NaoMove(4.47,  None, None)}
+             'Wave':          NaoMove(3.72,  None, None),
+             'Glory':         NaoMove(3.28,  None, None),
+             'Clap':          NaoMove(4.10,  None, None),
+             'Joy':           NaoMove(4.50,  None, None)}
 
     # The following is the order we chose for the mandatory positions:
-    initial_pos = ('M_StandInit',       NaoMove(1.52))
-    mandatory_pos = [('M_WipeForehead', NaoMove(4.56)),
+    initial_pos = ('M_StandInit',       NaoMove(1.60))
+    mandatory_pos = [('M_WipeForehead', NaoMove(4.48)),
                      ('M_Stand',        NaoMove(2.32)),
                      ('M_Hello',        NaoMove(4.34)),
-                     ('M_Sit',          NaoMove(9.36)),
-                     ('M_SitRelax',     NaoMove(3.85)),
+                     ('M_Sit',          NaoMove(9.84)),
+                     ('M_SitRelax',     NaoMove(3.92)),
                      ('M_StandZero',    NaoMove(1.4))]
     final_goal_pos = ('M_Crouch',       NaoMove(1.32))
     pos_list = [initial_pos, *mandatory_pos, final_goal_pos]
@@ -100,7 +100,7 @@ def main(robot_ip, port):
         cur_goal_state = (('standing', goal_standing),
                           ('remaining_time', 0),  # About this amount of time left
                           ('moves_done', 5),  # At least this number of moves done
-                          ('entropy', 2.5 + 0.2*(index-1)))  # At least this entropy value
+                          ('entropy', 2.5 + 0.3*(index-1)))  # At least this entropy value
 
         # The partial solution is found with an Iterative Deepening Search algorithm.
         # We pass the full choreography built so far ('solution') to the class that

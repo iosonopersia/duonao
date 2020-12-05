@@ -113,7 +113,7 @@ def main(robotIP, port):
         motion = ALProxy("ALMotion", robotIP, port)
         motion.angleInterpolationBezier(names, times, keys)
         posture = ALProxy("ALRobotPosture", robotIP, port)
-        posture.goToPosture("StandInit", 1.0)
+        #posture.goToPosture("StandInit", 1.0)
     except BaseException, err:
         print err
 
