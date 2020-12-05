@@ -4,6 +4,7 @@ as a study project for the "Fundamentals of AI and Knowledge
 Representation" course (Master Degree in Artificial Intelligence - University of Bologna).
 
 Our team was named "DuoNao" and our goal was to win the 2020 edition of the so called NaoChallenge.
+The project was submitted on December 5th 2020.
 
 ## Instructions
 Starting from a working instance of the "NaoUbuntu" virtual machine:
