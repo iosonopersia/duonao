@@ -25,6 +25,10 @@ def postcondition_standing(position):
 
 
 class NaoMove:
+    """
+    This class defines the information related
+    to a particular move.
+    """
     def __init__(self, duration=None, preconditions=None, postconditions=None):
         self.duration = duration
         self.preconditions = preconditions if preconditions is not None else {}
@@ -38,7 +42,6 @@ def main(robot_ip, port):
              'AirGuitar':     NaoMove(4.10,   {'standing': True},  {'standing': True}),
              'ArmDance':      NaoMove(10.42, {'standing': True},  {'standing': True}),
              'BlowKisses':    NaoMove(4.58,  {'standing': True},  {'standing': True}),
-             #'ArmsOpening':   NaoMove(3.86,  None, None),
              'Bow':           NaoMove(3.86,   {'standing': True},  {'standing': True}),
              'DiagonalRight': NaoMove(2.56,  {'standing': True},  {'standing': True}),
              'DanceMove':     NaoMove(6.13,  {'standing': True},  {'standing': True}),
