@@ -6,6 +6,11 @@ Representation" course (Master Degree in Artificial Intelligence - University of
 Our team was named "DuoNao" and our goal was to win the 2020 edition of the so called NaoChallenge.
 The project was submitted on December 5th 2020.
 
+## Resources
+  * [Music](https://github.com/iosonopersia/duonao/blob/main/Don't%20stop%20me%20now%20-%20Queen.mp3)
+  * [Demo video](https://github.com/iosonopersia/duonao/blob/main/Don't%20stop%20me%20NAO%20(queen).mp4)
+  * [Presentation slides](https://github.com/iosonopersia/duonao/blob/main/NAO%20Challenge.pdf)
+
 ## Instructions
 Starting from a working instance of the "NaoUbuntu" virtual machine:
   1. Install VLC and GIT:
