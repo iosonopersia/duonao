@@ -8,7 +8,8 @@ The project was submitted on December 5th 2020.
 
 ## Resources
   * [Music](https://github.com/iosonopersia/duonao/blob/main/Don't%20stop%20me%20now%20-%20Queen.mp3)
-  * [Demo video](https://github.com/iosonopersia/duonao/blob/main/Don't%20stop%20me%20NAO%20(queen).mp4)
+  * [Full demo video](https://github.com/iosonopersia/duonao/blob/main/Demo%20-Full%20Version.mp4)
+  * [Short demo video (1 minute only)](https://github.com/iosonopersia/duonao/blob/main/Demo%20-1%20minute.mp4)
   * [Presentation slides](https://github.com/iosonopersia/duonao/blob/main/NAO%20Challenge.pdf)
 
 ## Instructions
